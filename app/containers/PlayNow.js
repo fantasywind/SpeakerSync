@@ -26,6 +26,7 @@ const styles = {
   },
   rightPart: {
     flex: 1,
+    padding: '6px 0 0 0',
   },
 };
 
@@ -56,6 +57,8 @@ class PlayNow extends Component {
   componentWillReceiveProps(nextProps) {
     if (!this.props.nowSong && nextProps.nowSong && nextProps.nowSong.source === 'youtube') {
       this.initYoutubePlayer(nextProps.nowSong);
+    } else if (this.props.nowSong !== nextProps.nowSong && nextProps.nowSong.source === 'youtube') {
+      this.initYoutubePlayer(nextProps.nowSong);
     }
   }
 
@@ -64,15 +67,45 @@ class PlayNow extends Component {
   }
 
   initYoutubePlayer(nowSong) {
-    this.player = new YT.Player(this.refs.player, {
-      height: 1,
-      width: 1,
-      videoId: nowSong.value,
-      autoplay: true,
-      events: {
-        onReady: this.onYoutubePlayerReady.bind(this),
-      },
-    });
+    if (this.player) {
+      this.player.loadVideoById(nowSong.value);
+    } else {
+      this.player = new YT.Player(this.refs.player, {
+        height: 1,
+        width: 1,
+        videoId: nowSong.value,
+        autoplay: true,
+        events: {
+          onReady: this.onYoutubePlayerReady.bind(this),
+        },
+      });
+    }
+  }
+
+  playNextSong() {
+    const {
+      playlist,
+      nowSong,
+      playSong,
+    } = this.props;
+
+    if (playlist && playlist.songs) {
+      const playingIndex = playlist.songs.findIndex((song) => song === nowSong);
+      playSong(playlist.songs[playingIndex + 1] || playlist.songs[0]);
+    }
+  }
+
+  playPrevSong() {
+    const {
+      playlist,
+      nowSong,
+      playSong,
+    } = this.props;
+
+    if (playlist && playlist.songs) {
+      const playingIndex = playlist.songs.findIndex((song) => song === nowSong);
+      playSong(playlist.songs[playingIndex - 1] || playlist.songs[playlist.songs.length - 1]);
+    }
   }
 
   render() {
@@ -83,6 +116,9 @@ class PlayNow extends Component {
       pause,
     } = this.props;
 
+    const playPrevSong = this.playPrevSong.bind(this);
+    const playNextSong = this.playNextSong.bind(this);
+
     return (
       <div style={styles.wrapper}>
         <div style={styles.player} ref="player"></div>
@@ -90,7 +126,12 @@ class PlayNow extends Component {
         {nowSong ? (
           <div style={styles.rightPart}>
             <SongMeta title={nowSong.title} />
-            <PlayerController play={play} pause={pause} isPlaying={isPlaying} />
+            <PlayerController
+              prevSong={playPrevSong}
+              nextSong={playNextSong}
+              play={play}
+              pause={pause}
+              isPlaying={isPlaying} />
           </div>
         ) : null}
       </div>
@@ -104,11 +145,14 @@ PlayNow.propTypes = {
   fetchLocal: T.func,
   nowSong: T.object,
   play: T.func,
+  playlist: T.object,
   pause: T.func,
+  playSong: T.func,
 };
 
 export default connect(
   (state) => ({
+    playlist: state.Playlist.activedList,
     nowSong: state.Playlist.activedSong,
     isPlaying: state.Player.isPlaying,
   }),

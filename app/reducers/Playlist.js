@@ -1,5 +1,6 @@
 import {
   LOCAL_PLAYLIST_FETCHED,
+  PLAY_SONG,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -25,6 +26,11 @@ export default (state = {
       }
 
       return Object.assign({}, state, replaceObject);
+
+    case PLAY_SONG:
+      return Object.assign({}, state, {
+        activedSong: action.song,
+      });
 
     default:
       return state;

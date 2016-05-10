@@ -34,13 +34,15 @@ function PlayerController(props) {
     isPlaying,
     play,
     pause,
+    nextSong,
+    prevSong,
   } = props;
 
   const onClick = isPlaying ? pause : play;
 
   return (
     <div style={styles.wrapper}>
-      <button type="button" key="back" style={[styles.button, styles.sm]}>
+      <button type="button" key="back" onClick={prevSong} style={[styles.button, styles.sm]}>
         <span style={[styles.icon]} className="fa fa-fast-backward" />
       </button>
       <button type="button" key="state-control" onClick={onClick} style={[styles.button]}>
@@ -50,7 +52,7 @@ function PlayerController(props) {
           <span style={[styles.icon]} className="fa fa-play" />
         )}
       </button>
-      <button type="button" key="next" style={[styles.button, styles.sm]}>
+      <button type="button" key="next" onClick={nextSong} style={[styles.button, styles.sm]}>
         <span style={[styles.icon]} className="fa fa-fast-forward" />
       </button>
     </div>
@@ -61,6 +63,8 @@ PlayerController.propTypes = {
   isPlaying: T.bool,
   play: T.func,
   pause: T.func,
+  nextSong: T.func,
+  prevSong: T.func,
 };
 
 export default radium(PlayerController);
