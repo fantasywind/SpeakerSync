@@ -11,10 +11,15 @@
   ],
   "globals": {
     "arcRequire": false,
+    "SERVICE_HOST": false,
+    "YT": false,
   },
   "parser": "babel-eslint",
   "extends": "airbnb",
   "rules": {
+    "react/jsx-closing-bracket-location": [2, {
+      "selfClosing": 'after-props'
+    }],
     "import/no-unresolved": [2, {
       "ignore": [
         'browser-window',

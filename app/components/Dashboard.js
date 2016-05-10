@@ -1,6 +1,7 @@
 import React from 'react';
 
 import AppHeader from './AppHeader.js';
+import PlayerBox from './Player/PlayerBox.js';
 
 const styles = {
   wrapper: {
@@ -17,6 +18,7 @@ export default function Dashboard() {
   return (
     <div style={styles.wrapper}>
       <AppHeader />
+      <PlayerBox />
     </div>
   );
 }
