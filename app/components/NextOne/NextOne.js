@@ -3,7 +3,7 @@ import NextOnePreview from '../../containers/NextOnePreview.js';
 
 const styles = {
   wrapper: {
-    padding: '6px 18px',
+    padding: '10px 18px 6px 18px',
     backgroundColor: 'rgba(0, 0, 0, .42)',
     flex: 1,
   },

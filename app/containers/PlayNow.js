@@ -70,8 +70,8 @@ class PlayNow extends Component {
       videoId: nowSong.value,
       autoplay: true,
       events: {
-        onReady: this.onYoutubePlayerReady.bind(this)
-      }
+        onReady: this.onYoutubePlayerReady.bind(this),
+      },
     });
   }
 
@@ -83,18 +83,16 @@ class PlayNow extends Component {
       pause,
     } = this.props;
 
-    if (!nowSong) {
-      return null;
-    }
-
     return (
       <div style={styles.wrapper}>
         <div style={styles.player} ref="player"></div>
-        <Cover song={nowSong} />
-        <div style={styles.rightPart}>
-          <SongMeta title={nowSong.title} />
-          <PlayerController play={play} pause={pause} isPlaying={isPlaying} />
-        </div>
+        {nowSong ? <Cover song={nowSong} /> : null}
+        {nowSong ? (
+          <div style={styles.rightPart}>
+            <SongMeta title={nowSong.title} />
+            <PlayerController play={play} pause={pause} isPlaying={isPlaying} />
+          </div>
+        ) : null}
       </div>
     );
   }
