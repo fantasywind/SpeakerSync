@@ -1,5 +1,4 @@
 import React, {
-  Component,
   PropTypes as T,
 } from 'react';
 

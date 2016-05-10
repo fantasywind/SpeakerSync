@@ -6,19 +6,14 @@ import {
 
 export default (state = {
   playerInstance: null,
-  title: '',
   isPlaying: false,
 }, action) => {
-  let metadata;
   let replaceObject;
 
   switch (action.type) {
     case PLAYER_SET:
-      metadata = action.player.getVideoData();
-
       return Object.assign({}, state, {
         playerInstance: action.player,
-        title: metadata.title,
         isPlaying: false,
       });
 

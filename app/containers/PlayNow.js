@@ -77,19 +77,22 @@ class PlayNow extends Component {
 
   render() {
     const {
-      title,
       nowSong,
       isPlaying,
       play,
       pause,
     } = this.props;
 
+    if (!nowSong) {
+      return null;
+    }
+
     return (
       <div style={styles.wrapper}>
         <div style={styles.player} ref="player"></div>
         <Cover song={nowSong} />
         <div style={styles.rightPart}>
-          <SongMeta title={title} />
+          <SongMeta title={nowSong.title} />
           <PlayerController play={play} pause={pause} isPlaying={isPlaying} />
         </div>
       </div>
@@ -99,7 +102,6 @@ class PlayNow extends Component {
 
 PlayNow.propTypes = {
   setPlayer: T.func,
-  title: T.string,
   isPlaying: T.bool,
   fetchLocal: T.func,
   nowSong: T.object,
@@ -111,7 +113,6 @@ export default connect(
   (state) => ({
     nowSong: state.Playlist.activedSong,
     isPlaying: state.Player.isPlaying,
-    title: state.Player.title,
   }),
   (dispatch) => bindActionCreators(Object.assign({}, PlayerActions, PlaylistActions), dispatch)
 )(radium(PlayNow));

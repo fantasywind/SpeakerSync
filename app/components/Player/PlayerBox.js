@@ -4,7 +4,7 @@ import PlayNow from '../../containers/PlayNow.js';
 
 const styles = {
   wrapper: {
-    padding: '6px 18px',
+    padding: '6px 18px 2px 18px',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',

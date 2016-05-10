@@ -2,6 +2,7 @@ import React, {
   Component,
   PropTypes as T,
 } from 'react';
+import radium from 'radium';
 
 const styles = {
   wrapper: {
@@ -16,6 +17,10 @@ const styles = {
   cover: {
     maxWidth: '100%',
     maxHeight: '100%',
+  },
+  smWrapper: {
+    width: 54,
+    height: 54,
   },
 };
 
@@ -36,6 +41,7 @@ class Cover extends Component {
   render() {
     const {
       song,
+      sm,
     } = this.props;
 
     if (!song) {
@@ -43,7 +49,7 @@ class Cover extends Component {
     }
 
     return (
-      <div style={styles.wrapper}>
+      <div style={[styles.wrapper, sm && styles.smWrapper]}>
         <img alt={song.name} style={styles.cover} src={this.getImageURL()} />
       </div>
     );
@@ -52,6 +58,11 @@ class Cover extends Component {
 
 Cover.propTypes = {
   song: T.object,
+  sm: T.bool,
 };
 
-export default Cover;
+Cover.defaultProps = {
+  sm: false,
+};
+
+export default radium(Cover);
