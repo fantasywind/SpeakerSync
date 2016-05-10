@@ -1,8 +1,18 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="UTF-8">
+    <meta charset="utf-8">
     <title>Hello World!</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      html, body {
+        padding: 0;
+        margin: 0;
+      }
+    </style>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
   </head>
   <body>
     <div id='root'></div>
@@ -10,9 +20,15 @@
 
   <script>
     (function () {
-      const script = document.createElement('script');
-      script.src = `http://localhost:${(process.env.DEV_PORT || process.env.PORT || 7100)}/static/bundle.js`;
-      document.write(script.outerHTML);
+      const firstScriptTag = document.getElementsByTagName('script')[0];
+      const webpackHotScript = document.createElement('script');
+      const socketScript = document.createElement('script');
+
+      webpackHotScript.src = `http://localhost:${(process.env.DEV_PORT || process.env.PORT || 7100)}/static/bundle.js`;
+      socketScript.src = `http://localhost:${process.env.SERVICE_PORT}/socket.io/socket.io.js`;
+
+      firstScriptTag.parentNode.insertBefore(webpackHotScript, firstScriptTag);
+      firstScriptTag.parentNode.insertBefore(socketScript, firstScriptTag);
     })();
   </script>
 </html>

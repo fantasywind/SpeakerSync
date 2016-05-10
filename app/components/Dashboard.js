@@ -1,15 +1,22 @@
 import React from 'react';
 
+import AppHeader from './AppHeader.js';
+
 const styles = {
   wrapper: {
-    color: '#08c',
+    padding: 0,
+    margin: 0,
+    color: '#FFF',
+    width: '100vw',
+    height: '100vh',
+    backgroundColor: '#17171A',
   },
 };
 
-export default function () {
+export default function Dashboard() {
   return (
     <div style={styles.wrapper}>
-      <h1>SpeakerSync</h1>
+      <AppHeader />
     </div>
   );
 }

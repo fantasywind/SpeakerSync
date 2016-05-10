@@ -33,6 +33,7 @@
     "electron-prebuilt": "^0.37.8",
     "express": "^4.13.4",
     "file-loader": "^0.8.5",
+    "radium": "^0.17.1",
     "react": "^15.0.2",
     "react-dom": "^15.0.2",
     "react-redux": "^4.4.5",
@@ -45,6 +46,10 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
-    "menubar": "^4.1.0"
+    "bonjour": "^3.5.0",
+    "level": "^1.4.0",
+    "menubar": "^4.1.0",
+    "portfinder": "^1.0.3",
+    "socket.io": "^1.4.6"
   }
 }
