@@ -20,6 +20,14 @@ db.get('PLAYLISTS', (err) => {
           source: 'youtube',
           value: '4OrCA1OInoo',
           title: 'TAEYEON 태연_ I (feat. Verbal Jint)_Music Video',
+        }, {
+          source: 'youtube',
+          value: 'SygkJv51Ixs',
+          title: '陳綺貞 - 流浪者之歌 (Official Music Video)',
+        }, {
+          source: 'youtube',
+          value: 'sFYpyKRcHoQ',
+          title: '陳綺貞 - 天天想你 字幕',
         }],
       }]);
     }
