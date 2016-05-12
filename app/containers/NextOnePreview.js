@@ -33,19 +33,14 @@ const styles = {
 function NextOnePreview(props) {
   const {
     playlist,
-    playingSong,
+    playingIndex,
   } = props;
 
   if (!playlist || !playlist.songs || !playlist.songs.length) {
     return null;
   }
 
-  const songIndex = playlist.songs.findIndex((song) => song === playingSong);
-  let nextSong = playlist.songs[songIndex + 1];
-
-  if (!nextSong) {
-    nextSong = playlist.songs[0];
-  }
+  let nextSong = playlist.songs[playingIndex + 1] || playlist.songs[0];
 
   return (
     <div style={styles.wrapper}>
@@ -59,12 +54,12 @@ function NextOnePreview(props) {
 
 NextOnePreview.propTypes = {
   playlist: T.object,
-  playingSong: T.object,
+  playingIndex: T.number,
 };
 
 export default connect(
   (state) => ({
-    playingSong: state.Player.playingSong,
+    playingIndex: state.Playlist.playingIndex,
     playlist: state.Playlist.activedList,
   })
 )(radium(NextOnePreview));

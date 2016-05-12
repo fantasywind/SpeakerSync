@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import radium from 'radium';
 
-import * as PlayerActions from '../actions/Player.js';
 import * as PlaylistActions from '../actions/Playlist.js';
 
 import Cover from '../components/Player/Cover.js';
@@ -41,11 +40,11 @@ class PlayNow extends Component {
 
   componentDidMount() {
     const {
-      playingSong,
+      playlist,
       fetchLocal,
     } = this.props;
 
-    if (!playingSong) {
+    if (!playlist) {
       fetchLocal();
     }
   }
@@ -53,32 +52,31 @@ class PlayNow extends Component {
   playNextSong() {
     const {
       playlist,
-      playingSong,
+      playingIndex,
       play,
     } = this.props;
 
     if (playlist && playlist.songs) {
-      const playingIndex = playlist.songs.findIndex((song) => song === playingSong);
-      play(playlist.songs[playingIndex + 1] || playlist.songs[0]);
+      play(playlist.songs[playingIndex + 1] ? playingIndex + 1 : 0);
     }
   }
 
   playPrevSong() {
     const {
       playlist,
-      playingSong,
+      playingIndex,
       play,
     } = this.props;
 
     if (playlist && playlist.songs) {
-      const playingIndex = playlist.songs.findIndex((song) => song === playingSong);
-      play(playlist.songs[playingIndex - 1] || playlist.songs[playlist.songs.length - 1]);
+      play(playlist.songs[playingIndex - 1] ? playingIndex - 1 : playlist.songs.length - 1);
     }
   }
 
   render() {
     const {
-      playingSong,
+      playlist,
+      playingIndex,
       isPlaying,
       play,
       pause,
@@ -86,23 +84,25 @@ class PlayNow extends Component {
 
     const playPrevSong = this.playPrevSong.bind(this);
     const playNextSong = this.playNextSong.bind(this);
-    const bindedPlay = play.bind(null, playingSong);
+    const bindedPlay = play.bind(null, playingIndex);
+    if (!playlist || !playlist.songs[playingIndex]) {
+      return null;
+    }
+
+    const playingSong = playlist.songs[playingIndex];
 
     return (
       <div style={styles.wrapper}>
-        <div style={styles.player} ref="player"></div>
-        {playingSong ? <Cover song={playingSong} /> : null}
-        {playingSong ? (
-          <div style={styles.rightPart}>
-            <SongMeta title={playingSong.title} />
-            <PlayerController
-              prevSong={playPrevSong}
-              nextSong={playNextSong}
-              play={bindedPlay}
-              pause={pause}
-              isPlaying={isPlaying} />
-          </div>
-        ) : null}
+        <Cover song={playingSong} />
+        <div style={styles.rightPart}>
+          <SongMeta title={playingSong.title} />
+          <PlayerController
+            prevSong={playPrevSong}
+            nextSong={playNextSong}
+            play={bindedPlay}
+            pause={pause}
+            isPlaying={isPlaying} />
+        </div>
       </div>
     );
   }
@@ -112,7 +112,7 @@ PlayNow.propTypes = {
   setPlayer: T.func,
   isPlaying: T.bool,
   fetchLocal: T.func,
-  playingSong: T.object,
+  playingIndex: T.number,
   play: T.func,
   playlist: T.object,
   pause: T.func,
@@ -121,8 +121,8 @@ PlayNow.propTypes = {
 export default connect(
   (state) => ({
     playlist: state.Playlist.activedList,
-    playingSong: state.Player.playingSong,
-    isPlaying: state.Player.isPlaying,
+    isPlaying: state.Playlist.isPlaying,
+    playingIndex: state.Playlist.playingIndex,
   }),
-  (dispatch) => bindActionCreators(Object.assign({}, PlayerActions, PlaylistActions), dispatch)
+  (dispatch) => bindActionCreators(Object.assign({}, PlaylistActions), dispatch)
 )(radium(PlayNow));

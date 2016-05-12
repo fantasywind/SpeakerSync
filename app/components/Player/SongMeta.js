@@ -9,6 +9,8 @@ const styles = {
   },
   title: {
     fontSize: 13,
+    height: 39,
+    overflow: 'hidden',
   },
 };
 

@@ -34,8 +34,8 @@ db.get('PLAYLISTS', (err) => {
         createdAt: new Date(),
         songs: [{
           source: 'youtube',
-          value: '_-rUZu0R_Ww',
-          title: '周華健 Wakin Chau【忘憂草 Day lilies】Official Music Video',
+          value: 'xE6bNW2PmKw',
+          title: 'Roar - Katy Perry cover by Jannine Weigel',
         }, {
           source: 'youtube',
           value: 'VaHgEZcFv-Y',

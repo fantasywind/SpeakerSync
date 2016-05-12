@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import radium from 'radium';
 
-import * as PlayerActions from '../../actions/Player.js';
+import * as PlaylistActions from '../../actions/Playlist.js';
 
 const styles = {
   wrapper: {
@@ -60,5 +60,5 @@ export default connect(
   () => ({
 
   }),
-  (dispatch) => bindActionCreators(PlayerActions, dispatch)
+  (dispatch) => bindActionCreators(PlaylistActions, dispatch)
 )(radium(YouTubePlayer));
