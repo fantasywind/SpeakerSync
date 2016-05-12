@@ -1,5 +1,8 @@
 import React from 'react';
+import { Link as link } from 'react-router';
 import radium from 'radium';
+
+const Link = radium(link);
 
 const styles = {
   header: {
@@ -19,18 +22,24 @@ const styles = {
     color: '#FFF',
     fontWeight: 100,
     letterSpacing: 2,
-    fontFamily: 'sans-serif',
+    fontFamily: 'Helvetia Neue',
+  },
+  listButton: {
+    right: 40,
   },
   button: {
+    display: 'block',
     backgroundColor: 'transparent',
     color: '#E1E2E2',
     opacity: 0.72,
     border: 0,
     position: 'absolute',
-    right: 8,
-    top: 10,
+    right: 13,
+    top: 13,
     fontSize: 16,
+    padding: 0,
     cursor: 'pointer',
+    outline: 'none',
     ':hover': {
       opacity: 1,
       color: '#FFF',
@@ -42,9 +51,12 @@ function AppHeader() {
   return (
     <header style={styles.header}>
       <h1 style={styles.title}>SpeakerSync</h1>
-      <button type="button" style={styles.button}>
+      <Link to="/playlists" key="list-btn" style={[styles.button, styles.listButton]}>
+        <span className="fa fa-list-ul"></span>
+      </Link>
+      <Link to="/settings" key="setting-btn" style={styles.button}>
         <span className="fa fa-cog"></span>
-      </button>
+      </Link>
     </header>
   );
 }

@@ -29,13 +29,16 @@ const store = createStore(reducer, {}, applyMiddleware(
 
 const history = syncHistoryWithStore(memoryHistory, store);
 
-import Dashboard from './components/Dashboard.js';
+import PlayerView from './components/View/PlayerView.js';
+import PlaylistListView from './components/View/PlaylistListView.js';
 
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
       <Route path="/">
-        <IndexRoute component={Dashboard} />
+        <Route path="player" component={PlayerView} />
+        <Route path="playlists" component={PlaylistListView} />
+        <IndexRoute component={PlayerView} />
       </Route>
     </Router>
   </Provider>,
