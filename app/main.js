@@ -22,6 +22,7 @@ portfinder.getPort((portErr, port) => {
 
     const mb = menubar({
       index: `file://${__dirname}/index.html`,
+      icon: `${__dirname}/icon@2x.png`,
       'always-on-top': true,
       width: 320,
       height: 240,

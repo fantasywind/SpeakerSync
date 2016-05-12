@@ -29,6 +29,18 @@ db.get('PLAYLISTS', (err) => {
           value: 'sFYpyKRcHoQ',
           title: '陳綺貞 - 天天想你 字幕',
         }],
+      }, {
+        name: 'Untitle Playlist 2',
+        createdAt: new Date(),
+        songs: [{
+          source: 'youtube',
+          value: '_-rUZu0R_Ww',
+          title: '周華健 Wakin Chau【忘憂草 Day lilies】Official Music Video',
+        }, {
+          source: 'youtube',
+          value: 'VaHgEZcFv-Y',
+          title: '陳綺貞 - 旅行的意義 HD',
+        }],
       }]);
     }
   }
