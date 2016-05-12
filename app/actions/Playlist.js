@@ -5,6 +5,14 @@ export const PLAY_LIST = Symbol('PLAY_LIST');
 export const PLAYER_SET = Symbol('PLAYER_SET');
 export const PLAYER_PLAY = Symbol('PLAYER_PLAY');
 export const PLAYER_PAUSE = Symbol('PLAYER_PAUSE');
+export const PLAYER_INDEX_UPDATE = Symbol('PLAYER_INDEX_UPDATE');
+
+export function updatePlayingIndex(songIndex) {
+  return {
+    type: PLAYER_INDEX_UPDATE,
+    songIndex,
+  };
+}
 
 export function play(songIndex) {
   return {

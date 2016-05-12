@@ -4,6 +4,7 @@ import {
   PLAYER_SET,
   PLAYER_PLAY,
   PLAYER_PAUSE,
+  PLAYER_INDEX_UPDATE,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -14,6 +15,11 @@ export default (state = {
   playingIndex: 0,
 }, action) => {
   switch (action.type) {
+    case PLAYER_INDEX_UPDATE:
+      return Object.assign({}, state, {
+        playingIndex: action.songIndex,
+      });
+
     case PLAYER_PAUSE:
       if (!state.playerInstance) {
         return state;

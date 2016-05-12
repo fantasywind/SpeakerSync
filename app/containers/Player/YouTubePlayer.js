@@ -8,6 +8,13 @@ import radium from 'radium';
 
 import * as PlaylistActions from '../../actions/Playlist.js';
 
+const STATE_UNSTARTED = -1;
+const STATE_ENDED = 0;
+const STATE_PLAYING = 1;
+const STATE_PAUSED = 2;
+const STATE_BUFFERING = 3;
+const STATE_VIDEO_CUED = 5;
+
 const styles = {
   wrapper: {
     position: 'absolute',
@@ -41,6 +48,45 @@ class YouTubePlayer extends Component {
         onReady: this.onYoutubePlayerReady.bind(this),
       },
     });
+
+    this.player.addEventListener('onStateChange', (e) => {
+      const {
+        playingIndex,
+        updatePlayingIndex,
+      } = this.props;
+
+      switch (e.data) {
+        case STATE_UNSTARTED:
+          if (this.player.getPlaylistIndex() !== playingIndex) {
+            updatePlayingIndex(this.player.getPlaylistIndex());
+          }
+          break;
+
+        case STATE_ENDED:
+          console.log('state ended');
+          break;
+
+        case STATE_PLAYING:
+          console.log('state playing');
+          break;
+
+        case STATE_PAUSED:
+          console.log('state paused');
+          break;
+
+        case STATE_BUFFERING:
+          console.log('state buffering');
+          break;
+
+        case STATE_VIDEO_CUED:
+          console.log('state video cued');
+          break;
+
+        default:
+          console.log('undefined state');
+          break;
+      }
+    });
   }
 
   render() {
@@ -54,11 +100,13 @@ class YouTubePlayer extends Component {
 
 YouTubePlayer.propTypes = {
   setPlayer: T.func,
+  playingIndex: T.number,
+  updatePlayingIndex: T.func,
 };
 
 export default connect(
-  () => ({
-
+  (state) => ({
+    playingIndex: state.Playlist.playingIndex,
   }),
   (dispatch) => bindActionCreators(PlaylistActions, dispatch)
 )(radium(YouTubePlayer));
