@@ -13,10 +13,3 @@ export function fetchLocal() {
     });
   };
 }
-
-export function playSong(song) {
-  return {
-    type: PLAY_SONG,
-    song,
-  };
-}

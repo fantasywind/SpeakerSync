@@ -41,76 +41,44 @@ class PlayNow extends Component {
 
   componentDidMount() {
     const {
-      nowSong,
+      playingSong,
       fetchLocal,
     } = this.props;
 
-    if (!nowSong) {
+    if (!playingSong) {
       fetchLocal();
-    }
-
-    if (nowSong && nowSong.source === 'youtube') {
-      this.initYoutubePlayer(nowSong);
-    }
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (!this.props.nowSong && nextProps.nowSong && nextProps.nowSong.source === 'youtube') {
-      this.initYoutubePlayer(nextProps.nowSong);
-    } else if (this.props.nowSong !== nextProps.nowSong && nextProps.nowSong.source === 'youtube') {
-      this.initYoutubePlayer(nextProps.nowSong);
-    }
-  }
-
-  onYoutubePlayerReady() {
-    this.props.setPlayer(this.player);
-  }
-
-  initYoutubePlayer(nowSong) {
-    if (this.player) {
-      this.player.loadVideoById(nowSong.value);
-    } else {
-      this.player = new YT.Player(this.refs.player, {
-        height: 1,
-        width: 1,
-        videoId: nowSong.value,
-        autoplay: true,
-        events: {
-          onReady: this.onYoutubePlayerReady.bind(this),
-        },
-      });
     }
   }
 
   playNextSong() {
     const {
       playlist,
-      nowSong,
-      playSong,
+      playingSong,
+      play,
     } = this.props;
 
     if (playlist && playlist.songs) {
-      const playingIndex = playlist.songs.findIndex((song) => song === nowSong);
-      playSong(playlist.songs[playingIndex + 1] || playlist.songs[0]);
+      const playingIndex = playlist.songs.findIndex((song) => song === playingSong);
+      play(playlist.songs[playingIndex + 1] || playlist.songs[0]);
     }
   }
 
   playPrevSong() {
     const {
       playlist,
-      nowSong,
-      playSong,
+      playingSong,
+      play,
     } = this.props;
 
     if (playlist && playlist.songs) {
-      const playingIndex = playlist.songs.findIndex((song) => song === nowSong);
-      playSong(playlist.songs[playingIndex - 1] || playlist.songs[playlist.songs.length - 1]);
+      const playingIndex = playlist.songs.findIndex((song) => song === playingSong);
+      play(playlist.songs[playingIndex - 1] || playlist.songs[playlist.songs.length - 1]);
     }
   }
 
   render() {
     const {
-      nowSong,
+      playingSong,
       isPlaying,
       play,
       pause,
@@ -118,18 +86,19 @@ class PlayNow extends Component {
 
     const playPrevSong = this.playPrevSong.bind(this);
     const playNextSong = this.playNextSong.bind(this);
+    const bindedPlay = play.bind(null, playingSong);
 
     return (
       <div style={styles.wrapper}>
         <div style={styles.player} ref="player"></div>
-        {nowSong ? <Cover song={nowSong} /> : null}
-        {nowSong ? (
+        {playingSong ? <Cover song={playingSong} /> : null}
+        {playingSong ? (
           <div style={styles.rightPart}>
-            <SongMeta title={nowSong.title} />
+            <SongMeta title={playingSong.title} />
             <PlayerController
               prevSong={playPrevSong}
               nextSong={playNextSong}
-              play={play}
+              play={bindedPlay}
               pause={pause}
               isPlaying={isPlaying} />
           </div>
@@ -143,17 +112,16 @@ PlayNow.propTypes = {
   setPlayer: T.func,
   isPlaying: T.bool,
   fetchLocal: T.func,
-  nowSong: T.object,
+  playingSong: T.object,
   play: T.func,
   playlist: T.object,
   pause: T.func,
-  playSong: T.func,
 };
 
 export default connect(
   (state) => ({
     playlist: state.Playlist.activedList,
-    nowSong: state.Playlist.activedSong,
+    playingSong: state.Player.playingSong,
     isPlaying: state.Player.isPlaying,
   }),
   (dispatch) => bindActionCreators(Object.assign({}, PlayerActions, PlaylistActions), dispatch)

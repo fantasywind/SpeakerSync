@@ -9,7 +9,6 @@ import Cover from '../components/Player/Cover.js';
 const styles = {
   wrapper: {
     padding: '2px 8px',
-    backgroundColor: 'rgba(0, 0, 0, .42)',
     flex: 1,
     display: 'flex',
     alignItems: 'flex-start',
@@ -34,14 +33,14 @@ const styles = {
 function NextOnePreview(props) {
   const {
     playlist,
-    nowSong,
+    playingSong,
   } = props;
 
   if (!playlist || !playlist.songs || !playlist.songs.length) {
     return null;
   }
 
-  const songIndex = playlist.songs.findIndex((song) => song === nowSong);
+  const songIndex = playlist.songs.findIndex((song) => song === playingSong);
   let nextSong = playlist.songs[songIndex + 1];
 
   if (!nextSong) {
@@ -60,12 +59,12 @@ function NextOnePreview(props) {
 
 NextOnePreview.propTypes = {
   playlist: T.object,
-  nowSong: T.object,
+  playingSong: T.object,
 };
 
 export default connect(
   (state) => ({
-    nowSong: state.Playlist.activedSong,
+    playingSong: state.Player.playingSong,
     playlist: state.Playlist.activedList,
   })
 )(radium(NextOnePreview));

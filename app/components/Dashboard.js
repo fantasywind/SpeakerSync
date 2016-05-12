@@ -3,6 +3,7 @@ import React from 'react';
 import AppHeader from './AppHeader.js';
 import PlayerBox from './Player/PlayerBox.js';
 import NextOne from './NextOne/NextOne.js';
+import YouTubePlayer from '../containers/Player/YouTubePlayer.js';
 
 const styles = {
   wrapper: {
@@ -23,6 +24,7 @@ export default function Dashboard() {
       <AppHeader />
       <PlayerBox />
       <NextOne />
+      <YouTubePlayer />
     </div>
   );
 }

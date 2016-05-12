@@ -9,9 +9,10 @@ export function setPlayer(player) {
   };
 }
 
-export function play() {
+export function play(song) {
   return {
     type: PLAYER_PLAY,
+    song,
   };
 }
 

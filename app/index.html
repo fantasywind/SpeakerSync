@@ -18,6 +18,7 @@
     <div id='root'></div>
   </body>
 
+  <script src='https://www.youtube.com/player_api'></script>
   <script>
     (function () {
       window.SERVICE_HOST = `http://localhost:${process.env.SERVICE_PORT}`;
@@ -25,15 +26,12 @@
       const firstScriptTag = document.getElementsByTagName('script')[0];
       const webpackHotScript = document.createElement('script');
       const socketScript = document.createElement('script');
-      const youtubeScript = document.createElement('script');
 
       webpackHotScript.src = `http://localhost:${(process.env.DEV_PORT || process.env.PORT || 7100)}/static/bundle.js`;
       socketScript.src = `http://localhost:${process.env.SERVICE_PORT}/socket.io/socket.io.js`;
-      youtubeScript.src = 'https://www.youtube.com/player_api';
-
+      
       firstScriptTag.parentNode.insertBefore(webpackHotScript, firstScriptTag);
       firstScriptTag.parentNode.insertBefore(socketScript, firstScriptTag);
-      firstScriptTag.parentNode.insertBefore(youtubeScript, firstScriptTag);
     })();
   </script>
 </html>
