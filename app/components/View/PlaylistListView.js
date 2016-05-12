@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {
+  Component,
+} from 'react';
 
 import AppHeader from '../AppHeader.js';
 import PlaylistList from '../../containers/Playlist/PlaylistList.js';

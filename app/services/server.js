@@ -1,5 +1,4 @@
 import bonjour from 'bonjour';
-import portfinder from 'portfinder';
 import express from 'express';
 import http from 'http';
 import socketBinder from './lib/socketBinder.js';
@@ -18,7 +17,7 @@ socketBinder(server);
 server.publishService = () => {
   // Publish Service
   bonjourInstance.publish({
-    name: 'SpeakerSyncd',
+    name: `SpeakerSyncd-${Date.now()}`,
     type: 'http',
     port: process.env.SERVICE_PORT,
   });

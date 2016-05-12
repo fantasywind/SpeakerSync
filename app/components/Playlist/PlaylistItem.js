@@ -35,6 +35,18 @@ const styles = {
   link: {
     textDecoration: 'none',
   },
+  hostLabel: {
+    display: 'block',
+    backgroundColor: '#08c',
+    padding: '2px 8px',
+    borderRadius: 1,
+    position: 'absolute',
+    right: 32,
+    top: 9,
+    color: '#FFF',
+    fontSize: 10,
+    opacity: 0.72,
+  },
 };
 
 function PlaylistItem(props) {
@@ -49,6 +61,7 @@ function PlaylistItem(props) {
           <span style={styles.icon} className="fa fa-music" />
           {name}
         </h2>
+        {props.host ? <span style={styles.hostLabel}>{props.host}</span> : null}
         <span style={[styles.icon, styles.toPlayBtn]} className="fa fa-play" />
       </div>
     </Link>
@@ -58,6 +71,9 @@ function PlaylistItem(props) {
 PlaylistItem.propTypes = {
   playlist: T.object,
   play: T.func,
+  host: T.string,
+  port: T.number,
+  addresses: T.array,
 };
 
 export default radium(PlaylistItem);

@@ -10,6 +10,7 @@ db.get('PLAYLISTS', (err) => {
   if (err) {
     if (err.name === 'NotFoundError') {
       db.put('PLAYLISTS', [{
+        id: '24t029uga',
         name: 'Untitled Playlist',
         createdAt: new Date(),
         songs: [{
@@ -30,6 +31,7 @@ db.get('PLAYLISTS', (err) => {
           title: '陳綺貞 - 天天想你 字幕',
         }],
       }, {
+        id: 'weg2g2313g',
         name: 'Untitle Playlist 2',
         createdAt: new Date(),
         songs: [{

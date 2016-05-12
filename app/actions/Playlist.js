@@ -6,6 +6,21 @@ export const PLAYER_SET = Symbol('PLAYER_SET');
 export const PLAYER_PLAY = Symbol('PLAYER_PLAY');
 export const PLAYER_PAUSE = Symbol('PLAYER_PAUSE');
 export const PLAYER_INDEX_UPDATE = Symbol('PLAYER_INDEX_UPDATE');
+export const LAN_PLAYLIST_FOUND = Symbol('LAN_PLAYLIST_FOUND');
+
+export function foundLanPlaylists(service) {
+  return async (dispatch) => {
+    let response = await fetch(`http://${service.addresses[0]}:${service.port}/playlists`);
+
+    response = await response.json();
+
+    dispatch({
+      type: LAN_PLAYLIST_FOUND,
+      playlists: response,
+      service,
+    });
+  };
+}
 
 export function updatePlayingIndex(songIndex) {
   return {

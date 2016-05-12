@@ -5,6 +5,7 @@ import {
   PLAYER_PLAY,
   PLAYER_PAUSE,
   PLAYER_INDEX_UPDATE,
+  LAN_PLAYLIST_FOUND,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -13,8 +14,37 @@ export default (state = {
   playerInstance: null,
   isPlaying: false,
   playingIndex: 0,
+  lanPlaylists: [],
 }, action) => {
+  let tmpState;
+
   switch (action.type) {
+    case LAN_PLAYLIST_FOUND:
+      tmpState = Object.assign({}, state);
+
+      action.playlists.forEach((playlist) => {
+        const isExisted = !!state.lanPlaylists.find((storedPlaylist) => {
+          const sameId = storedPlaylist.id === playlist.id;
+          const sameHost = storedPlaylist.service.host === action.service.host;
+          const samePort = storedPlaylist.service.port === action.service.port;
+
+          return sameId && sameHost && samePort;
+        });
+
+        if (!isExisted) {
+          tmpState = Object.assign(tmpState, {
+            lanPlaylists: [
+              ...tmpState.lanPlaylists,
+              Object.assign({}, playlist, {
+                service: action.service,
+              }),
+            ],
+          });
+        }
+      });
+
+      return Object.assign({}, state, tmpState);
+
     case PLAYER_INDEX_UPDATE:
       return Object.assign({}, state, {
         playingIndex: action.songIndex,
