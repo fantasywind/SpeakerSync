@@ -6,6 +6,7 @@ import {
 
 import {
   LOCAL_PLAYLIST_FETCHED,
+  PLAY_LIST,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -14,8 +15,31 @@ export default (state = {
   playingSong: null,
 }, action) => {
   let videoData;
+  let songs;
 
   switch (action.type) {
+    case PLAY_LIST:
+      if (!state.playerInstance) {
+        return state;
+      }
+
+      songs = action.playlist.songs;
+
+      if (!songs.length) {
+        return state;
+      }
+
+      state.playerInstance.loadVideoById({
+        videoId: songs[0].value,
+      });
+
+      state.playerInstance.playVideo();
+
+      return Object.assign({}, state, {
+        isPlaying: true,
+        playingSong: songs[0],
+      });
+
     case LOCAL_PLAYLIST_FETCHED:
       if (state.playingSong) {
         return state;

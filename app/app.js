@@ -19,6 +19,7 @@ import {
   syncHistoryWithStore,
   routerMiddleware,
 } from 'react-router-redux';
+import AppBox from './components/AppBox.js';
 
 const memoryHistory = createMemoryHistory();
 
@@ -35,7 +36,7 @@ import PlaylistListView from './components/View/PlaylistListView.js';
 ReactDOM.render(
   <Provider store={store}>
     <Router history={history}>
-      <Route path="/">
+      <Route path="/" component={AppBox}>
         <Route path="player" component={PlayerView} />
         <Route path="playlists" component={PlaylistListView} />
         <IndexRoute component={PlayerView} />

@@ -24,9 +24,13 @@ class PlaylistList extends Component {
   render() {
     const {
       localLists,
+      playList,
     } = this.props;
 
-    const listItems = localLists.map((playlist) => <Playlist playlist={playlist} />);
+    const listItems = localLists.map((playlist, index) => {
+      const playBinded = playList.bind(null, playlist);
+      return <Playlist key={index} play={playBinded} playlist={playlist} />;
+    });
 
     return (
       <div style={styles.wrapper}>
@@ -38,6 +42,7 @@ class PlaylistList extends Component {
 
 PlaylistList.propTypes = {
   fetchLocal: T.func,
+  playList: T.func,
   localLists: T.array,
 };
 

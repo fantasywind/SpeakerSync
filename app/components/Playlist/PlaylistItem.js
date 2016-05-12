@@ -43,7 +43,7 @@ function PlaylistItem(props) {
   } = props.playlist;
 
   return (
-    <Link to="/player" key="play-btn" style={styles.link}>
+    <Link to="/player" key="play-btn" style={styles.link} onClick={props.play}>
       <div style={styles.wrapper}>
         <h2 style={styles.title}>
           <span style={styles.icon} className="fa fa-music" />
@@ -57,6 +57,7 @@ function PlaylistItem(props) {
 
 PlaylistItem.propTypes = {
   playlist: T.object,
+  play: T.func,
 };
 
 export default radium(PlaylistItem);
