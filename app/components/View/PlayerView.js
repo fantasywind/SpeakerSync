@@ -3,6 +3,7 @@ import React from 'react';
 import AppHeader from '../AppHeader.js';
 import PlayerBox from '../Player/PlayerBox.js';
 import NextOne from '../NextOne/NextOne.js';
+import TimeCursorLine from '../../containers/TimeCursorLine.js';
 
 const styles = {
   wrapper: {
@@ -22,6 +23,7 @@ export default function PlayerView() {
     <div style={styles.wrapper}>
       <AppHeader />
       <PlayerBox />
+      <TimeCursorLine />
       <NextOne />
     </div>
   );

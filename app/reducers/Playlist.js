@@ -6,6 +6,8 @@ import {
   PLAYER_PAUSE,
   PLAYER_INDEX_UPDATE,
   LAN_PLAYLIST_FOUND,
+  RESET_TIME_CURSOR,
+  TIME_CURSOR_UPDATED,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -15,10 +17,24 @@ export default (state = {
   isPlaying: false,
   playingIndex: 0,
   lanPlaylists: [],
+  timeCursorTotal: -1,
+  timeCursorNow: 0,
 }, action) => {
   let tmpState;
 
   switch (action.type) {
+    case RESET_TIME_CURSOR:
+      return Object.assign({}, state, {
+        timeCursorTotal: -1,
+        timeCursorNow: 0,
+      });
+
+    case TIME_CURSOR_UPDATED:
+      return Object.assign({}, state, {
+        timeCursorNow: action.now,
+        timeCursorTotal: action.total,
+      });
+
     case LAN_PLAYLIST_FOUND:
       tmpState = Object.assign({}, state);
 

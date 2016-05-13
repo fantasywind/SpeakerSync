@@ -7,6 +7,22 @@ export const PLAYER_PLAY = Symbol('PLAYER_PLAY');
 export const PLAYER_PAUSE = Symbol('PLAYER_PAUSE');
 export const PLAYER_INDEX_UPDATE = Symbol('PLAYER_INDEX_UPDATE');
 export const LAN_PLAYLIST_FOUND = Symbol('LAN_PLAYLIST_FOUND');
+export const TIME_CURSOR_UPDATED = Symbol('TIME_CURSOR_UPDATED');
+export const RESET_TIME_CURSOR = Symbol('RESET_TIME_CURSOR');
+
+export function updateTimeCursor(now, total) {
+  return {
+    type: TIME_CURSOR_UPDATED,
+    now,
+    total,
+  };
+}
+
+export function resetTimeCursor() {
+  return {
+    type: RESET_TIME_CURSOR,
+  };
+}
 
 export function foundLanPlaylists(service) {
   return async (dispatch) => {
