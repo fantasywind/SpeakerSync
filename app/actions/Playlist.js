@@ -101,6 +101,7 @@ export function resetTimeCursor() {
 
 export function foundLanPlaylists(service) {
   return async (dispatch) => {
+    console.log('found', service);
     let response = await fetch(`http://${service.addresses[0]}:${service.port}/playlists`);
 
     response = await response.json();

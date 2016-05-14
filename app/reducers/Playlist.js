@@ -93,11 +93,11 @@ export default (state = {
 
         return Object.assign({}, state, tmpState, {
           lanPlaylists: [
-            ...state.localLists.slice(0, willUpdateListIdx),
-            Object.assign({}, state.localLists[willUpdateListIdx], {
+            ...state.lanPlaylists.slice(0, willUpdateListIdx),
+            Object.assign({}, state.lanPlaylists[willUpdateListIdx], {
               songs: newSongList,
             }),
-            ...state.localLists.slice(willUpdateListIdx + 1),
+            ...state.lanPlaylists.slice(willUpdateListIdx + 1),
           ]
         });
       }
