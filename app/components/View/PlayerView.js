@@ -1,6 +1,6 @@
 import React from 'react';
 
-import AppHeader from '../AppHeader.js';
+import PlayerHeader from '../../containers/Headers/PlayerHeader.js';
 import PlayerBox from '../Player/PlayerBox.js';
 import NextOne from '../NextOne/NextOne.js';
 import TimeCursorLine from '../../containers/TimeCursorLine.js';
@@ -21,7 +21,7 @@ const styles = {
 export default function PlayerView() {
   return (
     <div style={styles.wrapper}>
-      <AppHeader />
+      <PlayerHeader />
       <PlayerBox />
       <TimeCursorLine />
       <NextOne />

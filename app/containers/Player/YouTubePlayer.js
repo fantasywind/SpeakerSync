@@ -5,15 +5,11 @@ import React, {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import radium from 'radium';
+import { EventEmitter } from 'events';
 
 import * as PlaylistActions from '../../actions/Playlist.js';
 
 const STATE_UNSTARTED = -1;
-const STATE_ENDED = 0;
-const STATE_PLAYING = 1;
-const STATE_PAUSED = 2;
-const STATE_BUFFERING = 3;
-const STATE_VIDEO_CUED = 5;
 
 const styles = {
   wrapper: {
@@ -29,15 +25,59 @@ class YouTubePlayer extends Component {
   componentDidMount() {
     if (YT.loaded) {
       this.initYoutubePlayer();
+      this.initYoutubeDataSource();
     } else {
       YT.ready(() => {
         this.initYoutubePlayer();
+        this.initYoutubeDataSource();
       });
     }
   }
 
   onYoutubePlayerReady() {
     this.props.setPlayer(this.player);
+  }
+
+  onYoutubeDataSourceReady() {
+    this.props.setDataSource(this.dataSource);
+  }
+
+  fixYoutubePlayerEventListener(player) {
+    const delegateController = new EventEmitter;
+
+    // onStateChange
+    function onStateChange(...args) {
+      delegateController.emit('onStateChange', ...args);
+    }
+
+    player.addEventListener('onStateChange', onStateChange);
+
+    // onStateChange
+    function onError(...args) {
+      delegateController.emit('onError', ...args);
+    }
+
+    player.addEventListener('onError', onError);
+
+    player.addEventListener = (name, fn) => {
+      delegateController.on(name, fn);
+    };
+
+    player.removeEventListener = (name, fn) => {
+      delegateController.removeListener(name, fn);
+    };
+  }
+
+  initYoutubeDataSource() {
+    this.dataSource = new YT.Player(this.refs.dataSource, {
+      height: 1,
+      width: 1,
+      events: {
+        onReady: this.onYoutubeDataSourceReady.bind(this),
+      },
+    });
+
+    this.fixYoutubePlayerEventListener(this.dataSource);
   }
 
   initYoutubePlayer() {
@@ -48,6 +88,8 @@ class YouTubePlayer extends Component {
         onReady: this.onYoutubePlayerReady.bind(this),
       },
     });
+
+    this.fixYoutubePlayerEventListener(this.player);
 
     this.player.addEventListener('onStateChange', (e) => {
       const {
@@ -62,23 +104,23 @@ class YouTubePlayer extends Component {
           }
           break;
 
-        case STATE_ENDED:
+        case YT.PlayerState.ENDED:
           console.log('state ended');
           break;
 
-        case STATE_PLAYING:
+        case YT.PlayerState.PLAYING:
           console.log('state playing');
           break;
 
-        case STATE_PAUSED:
+        case YT.PlayerState.PAUSED:
           console.log('state paused');
           break;
 
-        case STATE_BUFFERING:
+        case YT.PlayerState.BUFFERING:
           console.log('state buffering');
           break;
 
-        case STATE_VIDEO_CUED:
+        case YT.PlayerState.CUED:
           console.log('state video cued');
           break;
 
@@ -93,6 +135,7 @@ class YouTubePlayer extends Component {
     return (
       <div style={styles.wrapper}>
         <div ref="container"></div>
+        <div ref="dataSource"></div>
       </div>
     );
   }
@@ -100,6 +143,7 @@ class YouTubePlayer extends Component {
 
 YouTubePlayer.propTypes = {
   setPlayer: T.func,
+  setDataSource: T.func,
   playingIndex: T.number,
   updatePlayingIndex: T.func,
 };

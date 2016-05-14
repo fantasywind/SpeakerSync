@@ -3,12 +3,38 @@ import { push } from 'react-router-redux';
 export const LOCAL_PLAYLIST_FETCHED = Symbol('LOCAL_PLAYLIST_FETCHED');
 export const PLAY_LIST = Symbol('PLAY_LIST');
 export const PLAYER_SET = Symbol('PLAYER_SET');
+export const DATA_SOURCE_SET = Symbol('DATA_SOURCE_SET');
 export const PLAYER_PLAY = Symbol('PLAYER_PLAY');
 export const PLAYER_PAUSE = Symbol('PLAYER_PAUSE');
 export const PLAYER_INDEX_UPDATE = Symbol('PLAYER_INDEX_UPDATE');
 export const LAN_PLAYLIST_FOUND = Symbol('LAN_PLAYLIST_FOUND');
 export const TIME_CURSOR_UPDATED = Symbol('TIME_CURSOR_UPDATED');
 export const RESET_TIME_CURSOR = Symbol('RESET_TIME_CURSOR');
+export const ADD_YOUTUBE_TO_PLAYLIST = Symbol('ADD_YOUTUBE_TO_PLAYLIST');
+export const UPDATE_YOUTUBE_PREVIEW = Symbol('UPDATE_YOUTUBE_PREVIEW');
+export const CLEAR_YOUTUBE_PREVIEW = Symbol('CLEAR_YOUTUBE_PREVIEW');
+
+export function addYoutubeSongToPlaylist(song) {
+  return {
+    type: ADD_YOUTUBE_TO_PLAYLIST,
+    song,
+  };
+}
+
+export function clearYoutubeDataPreview() {
+  return {
+    type: CLEAR_YOUTUBE_PREVIEW,
+  };
+}
+
+export function updateYoutubeDataPreview(videoId, title = '', author = '') {
+  return {
+    type: UPDATE_YOUTUBE_PREVIEW,
+    videoId,
+    title,
+    author,
+  };
+}
 
 export function updateTimeCursor(now, total) {
   return {
@@ -55,6 +81,13 @@ export function play(songIndex) {
 export function pause() {
   return {
     type: PLAYER_PAUSE,
+  };
+}
+
+export function setDataSource(dataSource) {
+  return {
+    type: DATA_SOURCE_SET,
+    dataSource,
   };
 }
 

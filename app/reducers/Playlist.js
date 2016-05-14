@@ -2,27 +2,65 @@ import {
   LOCAL_PLAYLIST_FETCHED,
   PLAY_LIST,
   PLAYER_SET,
+  DATA_SOURCE_SET,
   PLAYER_PLAY,
   PLAYER_PAUSE,
   PLAYER_INDEX_UPDATE,
   LAN_PLAYLIST_FOUND,
   RESET_TIME_CURSOR,
   TIME_CURSOR_UPDATED,
+  ADD_YOUTUBE_TO_PLAYLIST,
+  UPDATE_YOUTUBE_PREVIEW,
+  CLEAR_YOUTUBE_PREVIEW,
 } from '../actions/Playlist.js';
 
 export default (state = {
   localLists: [],
   activedList: null,
   playerInstance: null,
+  dataSourceInstance: null,
   isPlaying: false,
   playingIndex: 0,
   lanPlaylists: [],
   timeCursorTotal: -1,
   timeCursorNow: 0,
+  previewVideoData: null,
 }, action) => {
-  let tmpState;
+  let tmpState, newSongList;
 
   switch (action.type) {
+    case CLEAR_YOUTUBE_PREVIEW:
+      return Object.assign({}, state, {
+        previewVideoData: null,
+      });
+
+    case UPDATE_YOUTUBE_PREVIEW:
+      return Object.assign({}, state, {
+        previewVideoData: {
+          videoId: action.videoId,
+          title: action.title,
+          author: action.author,
+        },
+      });
+
+    case ADD_YOUTUBE_TO_PLAYLIST:
+      newSongList = [
+        ...state.activedList.songs,
+        action.song,
+      ];
+
+      state.playerInstance.loadPlaylist({
+        playlist: newSongList.map((song) => song.value),
+        index: state.playerInstance.getPlaylistIndex(),
+        startSeconds: state.playerInstance.getCurrentTime(),
+      });
+
+      return Object.assign({}, state, {
+        activedList: Object.assign({}, state.activedList, {
+          songs: newSongList,
+        }),
+      });
+
     case RESET_TIME_CURSOR:
       return Object.assign({}, state, {
         timeCursorTotal: -1,
@@ -95,6 +133,11 @@ export default (state = {
       return Object.assign({}, state, {
         isPlaying: true,
         playingIndex: action.songIndex || 0,
+      });
+
+    case DATA_SOURCE_SET:
+      return Object.assign({}, state, {
+        dataSourceInstance: action.dataSource,
       });
 
     case PLAYER_SET:

@@ -32,6 +32,7 @@ const history = syncHistoryWithStore(memoryHistory, store);
 
 import PlayerView from './components/View/PlayerView.js';
 import PlaylistListView from './components/View/PlaylistListView.js';
+import AddSongView from './components/View/AddSongView.js';
 
 ReactDOM.render(
   <Provider store={store}>
@@ -39,6 +40,7 @@ ReactDOM.render(
       <Route path="/" component={AppBox}>
         <Route path="player" component={PlayerView} />
         <Route path="playlists" component={PlaylistListView} />
+        <Route path="playlists/:playlistId/addSong" component={AddSongView} />
         <IndexRoute component={PlayerView} />
       </Route>
     </Router>
