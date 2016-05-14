@@ -47,7 +47,9 @@
     "webpack-hot-middleware": "^2.10.0"
   },
   "dependencies": {
+    "body-parser": "^1.15.1",
     "bonjour": "^3.5.0",
+    "express-route-keeper": "^0.1.1",
     "level": "^1.4.0",
     "menubar": "^4.1.0",
     "moment": "^2.13.0",
