@@ -43,9 +43,6 @@ class PlaylistList extends Component {
       lanPlaylists,
     } = this.props;
 
-    console.log('local', localLists);
-    console.log('lan', lanPlaylists);
-
     const listItems = localLists.map((playlist, index) => {
       const playBinded = playList.bind(null, playlist);
       return <PlaylistItem key={index} play={playBinded} playlist={playlist} />;

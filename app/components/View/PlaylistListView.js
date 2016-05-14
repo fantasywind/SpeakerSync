@@ -2,7 +2,7 @@ import React, {
   Component,
 } from 'react';
 
-import AppHeader from '../AppHeader.js';
+import ListHeader from '../../containers/Headers/ListHeader.js';
 import PlaylistList from '../../containers/Playlist/PlaylistList.js';
 
 const styles = {
@@ -31,7 +31,7 @@ const styles = {
 export default function PlaylistListView() {
   return (
     <div style={styles.wrapper}>
-      <AppHeader />
+      <ListHeader />
       <div style={styles.container}>
         <h1 style={styles.title}>播放清單列表</h1>
         <PlaylistList />

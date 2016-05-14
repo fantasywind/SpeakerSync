@@ -20,21 +20,21 @@ const styles = {
   },
   title: {
     margin: 0,
-    fontSize: 15,
     lineHeight: 1,
     color: '#FFF',
     fontWeight: 100,
     letterSpacing: 2,
-    fontFamily: 'Helvetia Neue',
-    maxWidth: 260,
-    maxHeight: 15,
+    fontSize: 13,
+    maxWidth: 270,
+    maxHeight: 13,
     overflow: 'hidden',
+    fontFamily: 'Helvetia Neue',
   },
-  listButton: {
-    right: 40,
+  titleHasBack: {
+    marginLeft: 20,
   },
-  addButton: {
-    right: 71,
+  backButton: {
+    left: 13,
   },
   button: {
     display: 'block',
@@ -56,18 +56,18 @@ const styles = {
   },
 };
 
-function PlayerHeader(props) {
-  const addSongRoute = props.playlist ? `/playlists/${props.playlist.id}/addSong` : '/player';
+function ListHeader(props) {
+  const playingSong = props.isPlaying ? props.playlist.songs[props.playingIdx] : '';
+  const titleText = props.isPlaying ? `播放中: ${playingSong.title}` : 'SpeakerSync';
 
   return (
     <header style={styles.header}>
-      <h1 style={styles.title}>{props.playlist ? `播放中: ${props.playlist.name}` : ''}</h1>
-      <Link to={addSongRoute} key="add-btn" style={[styles.button, styles.addButton]}>
-        <span className="fa fa-plus"></span>
-      </Link>
-      <Link to="/playlists" key="list-btn" style={[styles.button, styles.listButton]}>
-        <span className="fa fa-list-ul"></span>
-      </Link>
+      {props.isPlaying ? (
+        <Link to="/player" key="list-btn" style={[styles.button, styles.backButton]}>
+          <span className="fa fa-chevron-left"></span>
+        </Link>
+      ) : null}
+      <h1 style={[styles.title, props.isPlaying && styles.titleHasBack]}>{titleText}</h1>
       <Link to="/settings" key="setting-btn" style={styles.button}>
         <span className="fa fa-cog"></span>
       </Link>
@@ -75,12 +75,16 @@ function PlayerHeader(props) {
   );
 }
 
-PlayerHeader.propTypes = {
+ListHeader.propTypes = {
+  playingIdx: T.number,
+  isPlaying: T.bool,
   playlist: T.object,
 };
 
 export default connect(
   (state) => ({
     playlist: state.Playlist.activedList,
+    isPlaying: state.Playlist.isPlaying,
+    playingIdx: state.Playlist.playingIndex,
   })
-)(radium(PlayerHeader));
+)(radium(ListHeader));
