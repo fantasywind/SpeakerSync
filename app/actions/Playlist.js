@@ -13,6 +13,17 @@ export const RESET_TIME_CURSOR = Symbol('RESET_TIME_CURSOR');
 export const ADD_YOUTUBE_TO_PLAYLIST = Symbol('ADD_YOUTUBE_TO_PLAYLIST');
 export const UPDATE_YOUTUBE_PREVIEW = Symbol('UPDATE_YOUTUBE_PREVIEW');
 export const CLEAR_YOUTUBE_PREVIEW = Symbol('CLEAR_YOUTUBE_PREVIEW');
+export const PLAYLIST_RENAMED = Symbol('PLAYLIST_RENAMED');
+
+export function renamePlaylist(playlist, newName) {
+  return async (dispatch) => {
+    dispatch({
+      type: PLAYLIST_RENAMED,
+      playlist,
+      newName,
+    });
+  };
+}
 
 export function addYoutubeSongToPlaylist(playlist, song) {
   return async (dispatch) => {

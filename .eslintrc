@@ -18,7 +18,8 @@
   "extends": "airbnb",
   "rules": {
     "react/jsx-closing-bracket-location": [2, {
-      "selfClosing": 'after-props'
+      "nonEmpty": 'after-props',
+      "selfClosing": 'after-props',
     }],
     "import/no-unresolved": [2, {
       "ignore": [

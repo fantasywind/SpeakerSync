@@ -12,6 +12,7 @@ import {
   ADD_YOUTUBE_TO_PLAYLIST,
   UPDATE_YOUTUBE_PREVIEW,
   CLEAR_YOUTUBE_PREVIEW,
+  PLAYLIST_RENAMED,
 } from '../actions/Playlist.js';
 
 export default (state = {
@@ -33,6 +34,48 @@ export default (state = {
   let pauseListener;
 
   switch (action.type) {
+    case PLAYLIST_RENAMED:
+      if (state.activedList === action.playlist) {
+        newSongList = Object.assign({}, action.playlist, {
+          name: action.newName,
+        });
+
+        if (action.playlist.service) {
+          willUpdateListIdx = state.lanPlaylists.findIndex((item) => item === action.playlist);
+
+          if (!~willUpdateListIdx) {
+            return state;
+          }
+
+          return Object.assign({}, state, {
+            activedList: newSongList,
+            lanPlaylists: [
+              ...state.lanPlaylists.slice(0, willUpdateListIdx),
+              newSongList,
+              ...state.lanPlaylists.slice(willUpdateListIdx + 1),
+            ],
+          });
+        }
+
+        // Local
+        willUpdateListIdx = state.localLists.findIndex((item) => item === action.playlist);
+
+        if (!~willUpdateListIdx) {
+          return state;
+        }
+
+        return Object.assign({}, state, {
+          activedList: newSongList,
+          localLists: [
+            ...state.localLists.slice(0, willUpdateListIdx),
+            newSongList,
+            ...state.localLists.slice(willUpdateListIdx + 1),
+          ],
+        });
+      }
+
+      return state;
+
     case CLEAR_YOUTUBE_PREVIEW:
       return Object.assign({}, state, {
         previewVideoData: null,
