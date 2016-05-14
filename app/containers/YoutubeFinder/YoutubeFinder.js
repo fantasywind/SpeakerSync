@@ -106,7 +106,7 @@ class YoutubeFinder extends Component {
     dataSourceInstance.removeEventListener('onError', this.bindedPlayerErrorHandler);
 
     if (error.data === 150 || error.data === 101) {
-      alert('改影片不允許外連播放');
+      alert('該影片不允許外連播放');
     } else {
       console.error(error);
     }

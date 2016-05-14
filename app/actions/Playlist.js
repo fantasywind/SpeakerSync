@@ -15,10 +15,58 @@ export const UPDATE_YOUTUBE_PREVIEW = Symbol('UPDATE_YOUTUBE_PREVIEW');
 export const CLEAR_YOUTUBE_PREVIEW = Symbol('CLEAR_YOUTUBE_PREVIEW');
 
 export function addYoutubeSongToPlaylist(playlist, song) {
-  return {
-    type: ADD_YOUTUBE_TO_PLAYLIST,
-    playlist,
-    song,
+  return async (dispatch) => {
+    if (playlist.service) {
+      try {
+        const service = playlist.service;
+
+        await fetch(`http://${service.addresses[0]}:${service.port}/playlists/${playlist.id}/songs`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            songs: [
+              ...playlist.songs,
+              song,
+            ],
+          })
+        });
+
+        dispatch({
+          type: ADD_YOUTUBE_TO_PLAYLIST,
+          playlist,
+          song,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await fetch(`${SERVICE_HOST}/playlists/${playlist.id}/songs`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            songs: [
+              ...playlist.songs,
+              song,
+            ],
+          })
+        });
+
+        dispatch({
+          type: ADD_YOUTUBE_TO_PLAYLIST,
+          playlist,
+          song,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 }
 

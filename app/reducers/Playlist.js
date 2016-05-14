@@ -28,7 +28,7 @@ export default (state = {
 }, action) => {
   let tmpState;
   let newSongList;
-  let willUpdatePlaylistIdx;
+  let willUpdateListIdx;
   let playState;
   let pauseListener;
 
@@ -76,7 +76,7 @@ export default (state = {
           state.playerInstance.addEventListener('onStateChange', pauseListener);
         }
 
-        return Object.assign({}, state, {
+        tmpState = Object.assign({}, state, {
           activedList: Object.assign({}, state.activedList, {
             songs: newSongList,
           }),
@@ -85,37 +85,37 @@ export default (state = {
 
       if (action.playlist.service) {
         // Lan Playlist
-        willUpdatePlaylistIdx = state.lanPlaylists.find((playlist) => playlist === action.playlist);
+        willUpdateListIdx = state.lanPlaylists.findIndex((list) => list === action.playlist);
 
-        if (!~willUpdatePlaylistIdx) {
+        if (!~willUpdateListIdx) {
           return state;
         }
 
-        return Object.assign({}, state, {
+        return Object.assign({}, state, tmpState, {
           lanPlaylists: [
-            ...state.localLists.slice(0, willUpdatePlaylistIdx),
-            Object.assign({}, state.localLists[willUpdatePlaylistIdx], {
+            ...state.localLists.slice(0, willUpdateListIdx),
+            Object.assign({}, state.localLists[willUpdateListIdx], {
               songs: newSongList,
             }),
-            ...state.localLists.slice(willUpdatePlaylistIdx + 1),
+            ...state.localLists.slice(willUpdateListIdx + 1),
           ]
         });
       }
 
       // Local Playlist
-      willUpdatePlaylistIdx = state.localLists.find((playlist) => playlist === action.playlist);
+      willUpdateListIdx = state.localLists.findIndex((list) => list === action.playlist);
 
-      if (!~willUpdatePlaylistIdx) {
+      if (!~willUpdateListIdx) {
         return state;
       }
 
-      return Object.assign({}, state, {
+      return Object.assign({}, state, tmpState, {
         localLists: [
-          ...state.localLists.slice(0, willUpdatePlaylistIdx),
-          Object.assign({}, state.localLists[willUpdatePlaylistIdx], {
+          ...state.localLists.slice(0, willUpdateListIdx),
+          Object.assign({}, state.localLists[willUpdateListIdx], {
             songs: newSongList,
           }),
-          ...state.localLists.slice(willUpdatePlaylistIdx + 1),
+          ...state.localLists.slice(willUpdateListIdx + 1),
         ]
       });
 
