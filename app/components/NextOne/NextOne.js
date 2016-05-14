@@ -10,17 +10,18 @@ const styles = {
     overflow: 'hidden',
   },
   helper: {
+    fontFamily: 'sans-serif',
     fontSize: 12,
     margin: 0,
-    letterSpacing: 2,
-    color: '#D7D7D7',
+    textDecoration: 'underline',
+    color: '#a1a1a1',
   },
 };
 
 function NextOne() {
   return (
     <div style={styles.wrapper}>
-      <p style={styles.helper}>接著播放:</p>
+      <p style={styles.helper}>Next on:</p>
       <NextOnePreview />
     </div>
   );

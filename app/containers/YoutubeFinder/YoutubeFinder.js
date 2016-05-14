@@ -163,8 +163,7 @@ class YoutubeFinder extends Component {
           <Link
             onClick={buttonClick}
             to="/player"
-            style={[styles.addButton, previewVideoData && styles.activedBtn]}
-          >加入歌曲</Link>
+            style={[styles.addButton, previewVideoData && styles.activedBtn]}>Add Song</Link>
         </div>
       </div>
     );
