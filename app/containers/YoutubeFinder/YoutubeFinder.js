@@ -136,12 +136,13 @@ class YoutubeFinder extends Component {
 
   render() {
     const {
+      playlist,
       previewVideoData,
       addYoutubeSongToPlaylist,
     } = this.props;
 
     const bindedParseYoutube = this.parseYoutube.bind(this);
-    const buttonClick = previewVideoData ? addYoutubeSongToPlaylist.bind(null, {
+    const buttonClick = previewVideoData ? addYoutubeSongToPlaylist.bind(null, playlist, {
       title: previewVideoData.title,
       source: 'youtube',
       value: previewVideoData.videoId,

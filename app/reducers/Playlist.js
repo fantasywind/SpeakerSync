@@ -26,7 +26,11 @@ export default (state = {
   timeCursorNow: 0,
   previewVideoData: null,
 }, action) => {
-  let tmpState, newSongList;
+  let tmpState;
+  let newSongList;
+  let willUpdatePlaylistIdx;
+  let playState;
+  let pauseListener;
 
   switch (action.type) {
     case CLEAR_YOUTUBE_PREVIEW:
@@ -49,16 +53,70 @@ export default (state = {
         action.song,
       ];
 
-      state.playerInstance.loadPlaylist({
-        playlist: newSongList.map((song) => song.value),
-        index: state.playerInstance.getPlaylistIndex(),
-        startSeconds: state.playerInstance.getCurrentTime(),
-      });
+      if (state.activedList === action.playlist) {
+        playState = state.playerInstance.getPlayerState();
+        state.playerInstance.loadPlaylist({
+          playlist: newSongList.map((song) => song.value),
+          index: state.playerInstance.getPlaylistIndex(),
+          startSeconds: state.playerInstance.getCurrentTime(),
+        });
+
+        if (playState === YT.PlayerState.PAUSED || playState === YT.PlayerState.CUED) {
+          pauseListener = (e) => {
+            if (e.data === YT.PlayerState.PLAYING) {
+              // Fixed Immediately Pause Fail
+              state.playerInstance.mute();
+              setTimeout(() => {
+                state.playerInstance.pauseVideo();
+                state.playerInstance.unMute();
+              }, 10);
+              state.playerInstance.removeEventListener('onStateChange', pauseListener);
+            }
+          };
+          state.playerInstance.addEventListener('onStateChange', pauseListener);
+        }
+
+        return Object.assign({}, state, {
+          activedList: Object.assign({}, state.activedList, {
+            songs: newSongList,
+          }),
+        });
+      }
+
+      if (action.playlist.service) {
+        // Lan Playlist
+        willUpdatePlaylistIdx = state.lanPlaylists.find((playlist) => playlist === action.playlist);
+
+        if (!~willUpdatePlaylistIdx) {
+          return state;
+        }
+
+        return Object.assign({}, state, {
+          lanPlaylists: [
+            ...state.localLists.slice(0, willUpdatePlaylistIdx),
+            Object.assign({}, state.localLists[willUpdatePlaylistIdx], {
+              songs: newSongList,
+            }),
+            ...state.localLists.slice(willUpdatePlaylistIdx + 1),
+          ]
+        });
+      }
+
+      // Local Playlist
+      willUpdatePlaylistIdx = state.localLists.find((playlist) => playlist === action.playlist);
+
+      if (!~willUpdatePlaylistIdx) {
+        return state;
+      }
 
       return Object.assign({}, state, {
-        activedList: Object.assign({}, state.activedList, {
-          songs: newSongList,
-        }),
+        localLists: [
+          ...state.localLists.slice(0, willUpdatePlaylistIdx),
+          Object.assign({}, state.localLists[willUpdatePlaylistIdx], {
+            songs: newSongList,
+          }),
+          ...state.localLists.slice(willUpdatePlaylistIdx + 1),
+        ]
       });
 
     case RESET_TIME_CURSOR:

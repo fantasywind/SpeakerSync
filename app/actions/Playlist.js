@@ -14,9 +14,10 @@ export const ADD_YOUTUBE_TO_PLAYLIST = Symbol('ADD_YOUTUBE_TO_PLAYLIST');
 export const UPDATE_YOUTUBE_PREVIEW = Symbol('UPDATE_YOUTUBE_PREVIEW');
 export const CLEAR_YOUTUBE_PREVIEW = Symbol('CLEAR_YOUTUBE_PREVIEW');
 
-export function addYoutubeSongToPlaylist(song) {
+export function addYoutubeSongToPlaylist(playlist, song) {
   return {
     type: ADD_YOUTUBE_TO_PLAYLIST,
+    playlist,
     song,
   };
 }
