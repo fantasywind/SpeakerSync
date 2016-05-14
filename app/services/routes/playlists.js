@@ -3,7 +3,7 @@ import db from '../database.js';
 import RouteKeeper from 'express-route-keeper';
 
 const router = new Router();
-const keeper = RouteKeeper();
+const keeper = new RouteKeeper();
 
 router.get('/', (req, res) => {
   db.get('PLAYLISTS', (err, val) => {
