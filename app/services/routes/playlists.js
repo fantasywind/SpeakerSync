@@ -15,6 +15,37 @@ router.get('/', (req, res) => {
   });
 });
 
+router.put('/:playlistId/name', keeper({
+  name: String,
+}), (req, res) => {
+  db.get('PLAYLISTS', (err, playlists) => {
+    if (err) {
+      return console.error(err);
+    }
+
+    const playlist = playlists.find((item) => item.id === req.params.playlistId);
+
+    if (!playlist) {
+      res.status(400);
+      return res.json({
+        message: 'Playlist not found',
+      });
+    }
+
+    playlist.name = req.body.name;
+
+    return db.put('PLAYLISTS', playlists, (putErr) => {
+      if (putErr) {
+        console.error(putErr);
+      } else {
+        res.json({
+          playlist,
+        });
+      }
+    });
+  });
+});
+
 router.put('/:playlistId/songs', keeper({
   songs: Array,
 }), (req, res) => {

@@ -17,11 +17,51 @@ export const PLAYLIST_RENAMED = Symbol('PLAYLIST_RENAMED');
 
 export function renamePlaylist(playlist, newName) {
   return async (dispatch) => {
-    dispatch({
-      type: PLAYLIST_RENAMED,
-      playlist,
-      newName,
-    });
+    if (playlist.service) {
+      try {
+        const service = playlist.service;
+
+        await fetch(`http://${service.addresses[0]}:${service.port}/playlists/${playlist.id}/name`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: newName,
+          })
+        });
+
+        dispatch({
+          type: PLAYLIST_RENAMED,
+          playlist,
+          newName,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    } else {
+      try {
+        await fetch(`${SERVICE_HOST}/playlists/${playlist.id}/name`, {
+          method: 'PUT',
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            name: newName,
+          })
+        });
+
+        dispatch({
+          type: PLAYLIST_RENAMED,
+          playlist,
+          newName,
+        });
+      } catch (e) {
+        console.error(e);
+      }
+    }
   };
 }
 
