@@ -27,7 +27,7 @@
       const webpackHotScript = document.createElement('script');
       const socketScript = document.createElement('script');
 
-      webpackHotScript.src = `http://localhost:${(process.env.DEV_PORT || process.env.PORT || 7100)}/static/bundle.js`;
+      webpackHotScript.src = `http://localhost:${(process.env.DEV_PORT || process.env.PORT || 7500)}/static/bundle.js`;
       socketScript.src = `http://localhost:${process.env.SERVICE_PORT}/socket.io/socket.io.js`;
 
       socketScript.onload = () => {
